@@ -1,0 +1,99 @@
+# 🚀 Data Engineering Interview Day Cheat Sheet
+
+Use this sheet for **30-min pre-interview revision**.  
+Covers end-to-end flow: Bronze → Silver → Gold → Orchestration → Security → Debugging.
+
+---
+
+## Ingestion & Bronze
+- Validate files → presence, size, schema, corruption.  
+- Good → Bronze table, Bad → Quarantine.  
+- Metadata: ingestion_time, source_file.  
+- Idempotency: file hash + MERGE.  
+- Scale: Databricks Auto Loader.  
+
+---
+
+## Incremental Processing (Silver)
+- Dedup → window on `id, updated_at`.  
+- MERGE with condition `s.updated_at > t.updated_at`.  
+- Late data → watermark/SLA cutoff.  
+- Partition by event_date.  
+
+---
+
+## CDC Upserts (Delta)
+- Delta MERGE: I/U/D.  
+- Deletes → `whenMatchedDelete(op='D')`.  
+- Audit table → id, op, updated_at, processed_at.  
+- MERGE = idempotent, safe to re-run.  
+
+---
+
+## Joins & Skew
+- Broadcast small table (dim).  
+- Salting for skew keys.  
+- Separate heavy key path.  
+- Spark 3 AQE auto handles skew.  
+
+---
+
+## Data Modeling (Gold / DWH)
+- Star schema: facts (txn) + dims (cust, product).  
+- SCD Type 1 = overwrite, Type 2 = new row with validity.  
+- Surrogate keys for stable joins.  
+- Partition facts by date, ZORDER for queries.  
+
+---
+
+## Data Quality
+- Nulls, ranges, uniqueness, FK integrity.  
+- Tools: Great Expectations, DLT expectations.  
+- Streaming → checks in foreachBatch.  
+- Bad rows → quarantine → reprocess.  
+
+---
+
+## SQL Optimization
+- Diagnose: `EXPLAIN`, Spark UI.  
+- Partition low-card cols (date), ZORDER high-card (cust_id).  
+- Column pruning, broadcast joins.  
+- Compact files (~128MB).  
+- Pre-aggregate for dashboards.  
+
+---
+
+## Orchestration (Airflow)
+- DAG: Bronze → Silver → Gold.  
+- `max_active_runs=1`, retries=2–3, SLA alerts.  
+- Backfill via run_date param.  
+- Observability: row counts, lineage.  
+
+---
+
+## DAG Reliability
+- Retries: exponential backoff.  
+- Idempotent tasks (MERGE, unique IDs).  
+- Sensors: reschedule mode.  
+- Timeout tasks to avoid zombies.  
+- SLA alerts for late jobs.  
+
+---
+
+## Security & Governance
+- IAM, Unity Catalog, least privilege.  
+- Encryption: at rest + in transit.  
+- PII: mask/hash/tokenize.  
+- Row-level = filter rows, column-level = mask cols.  
+- GDPR deletes → propagate via CDC MERGE.  
+
+---
+
+## Debugging
+- Spark UI: stragglers = skew.  
+- OOM → repartition, filter early, increase executor mem.  
+- Skew → salting, broadcast, AQE.  
+- Small files → OPTIMIZE/compaction.  
+- Streaming checkpoint corruption → reset + replay.  
+
+---
