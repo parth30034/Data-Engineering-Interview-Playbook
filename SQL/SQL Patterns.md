@@ -299,8 +299,5 @@ LEFT JOIN LATERAL (
 
 ---
 
-*If you want, I can also produce:*
-- A one-page printable PDF of this cheatsheet,
-- A set of 20 short practice questions (one per card) with answers,
-- Or a spaced-repetition flashcard deck (CSV/Anki) you can import.
+
 
