@@ -20,5 +20,5 @@
 
 1. Clone the repo:
 ```bash
-git clone git@github.com:YOUR_GITHUB_USER_OR_ORG/REPO_NAME.git
-cd REPO_NAME
+git clone https://github.com/parth30034/Data-Engineering-Interview-Playbook.git
+cd Data-Engineering-Interview-Playbook
