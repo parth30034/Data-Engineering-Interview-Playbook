@@ -5,6 +5,10 @@
 [![Docs](https://img.shields.io/badge/docs-ready-lightgrey)]()
 
 > Compact, practical, and interview-focused library of 12 data-engineering problems (Bronze→Silver→Gold pipeline). Each problem includes: problem statement, baseline approach, code snippets (PySpark/SQL), follow-up Q&A, and a one-page cheat sheet.
+---
+## Pipeline Map
+
+![Pipeline Map](diagrams/output.png)
 
 ---
 
